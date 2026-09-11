@@ -1,0 +1,6 @@
+[package]
+name = "atlas-native-demo"
+version = "0.0.0"
+rust-version = "1.80"
+edition = "2021"
+build = "build.rs"

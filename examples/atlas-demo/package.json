@@ -1,0 +1,11 @@
+{
+  "name": "atlas-demo",
+  "private": true,
+  "engines": { "node": ">=20" },
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "prepare": "node scripts/generate-client.js"
+  }
+}

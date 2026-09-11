@@ -1,0 +1,284 @@
+{
+  "project": "atlas-demo",
+  "version": "0.1.0",
+  "schema_version": 1,
+  "files": [
+    ".env.example",
+    "Makefile",
+    "api/pyproject.toml",
+    "compose.yaml",
+    "native/Cargo.toml",
+    "native/build.rs",
+    "package.json",
+    "scripts/bootstrap.sh"
+  ],
+  "findings": [
+    {
+      "rule": "SL002",
+      "priority": "high",
+      "title": "Downloaded code piped into a shell",
+      "path": "scripts/bootstrap.sh",
+      "line": 3,
+      "evidence": "curl -fsSL https://example.invalid/atlas/bootstrap.sh | sh",
+      "why": "This command runs content returned by a network request.",
+      "action": "Download and inspect the script first; verify the source and a pinned checksum or release.",
+      "fingerprint": "c3a3a0e67b304fa9"
+    },
+    {
+      "rule": "SL004",
+      "priority": "medium",
+      "title": "Recursive deletion command",
+      "path": "Makefile",
+      "line": 12,
+      "evidence": "rm -rf .cache",
+      "why": "This command recursively deletes a path. A build-folder cleanup may be intentional.",
+      "action": "Check the exact target, variable expansion and working directory before running it.",
+      "fingerprint": "6a871987d7e6ce37"
+    },
+    {
+      "rule": "SL011",
+      "priority": "medium",
+      "title": "Ports published to the host",
+      "path": "compose.yaml",
+      "line": 5,
+      "evidence": "ports:",
+      "why": "A Compose ports block publishes container ports. Actual binding depends on its values and Compose configuration.",
+      "action": "Inspect host IP and port values. Bind local-only services explicitly to 127.0.0.1 when appropriate.",
+      "fingerprint": "2a182bd75ea6c41a"
+    },
+    {
+      "rule": "SL011",
+      "priority": "medium",
+      "title": "Ports published to the host",
+      "path": "compose.yaml",
+      "line": 11,
+      "evidence": "ports:",
+      "why": "A Compose ports block publishes container ports. Actual binding depends on its values and Compose configuration.",
+      "action": "Inspect host IP and port values. Bind local-only services explicitly to 127.0.0.1 when appropriate.",
+      "fingerprint": "2a182bd75ea6c41a"
+    },
+    {
+      "rule": "SL001",
+      "priority": "medium",
+      "title": "Install lifecycle hook",
+      "path": "package.json",
+      "line": 9,
+      "evidence": "prepare: node scripts/generate-client.js",
+      "why": "This script can run during package installation or preparation, depending on the package manager and its settings.",
+      "action": "Read this command and any scripts it invokes before installing. Check your package manager's lifecycle controls.",
+      "fingerprint": "2d5bbb08b0f151f3"
+    },
+    {
+      "rule": "SL010",
+      "priority": "info",
+      "title": "Python build backend",
+      "path": "api/pyproject.toml",
+      "line": 11,
+      "evidence": "setuptools.build_meta",
+      "why": "Building a Python source distribution invokes its build backend. SetupLens does not import or inspect backend code.",
+      "action": "Review build-system requirements and backend source when building an unfamiliar project.",
+      "fingerprint": "d73eb27d71fde52d"
+    },
+    {
+      "rule": "SL017",
+      "priority": "info",
+      "title": "Rust build-time script",
+      "path": "native/Cargo.toml",
+      "line": 6,
+      "evidence": "native/build.rs",
+      "why": "Cargo compiles and runs this build script before building the package. It may generate code or build native libraries.",
+      "action": "Read the build script and check any native tools it calls. Dependencies may have their own build scripts outside this scan.",
+      "fingerprint": "de70022ad961ff33"
+    }
+  ],
+  "runtimes": [
+    {
+      "name": "Python",
+      "value": ">=3.11",
+      "path": "api/pyproject.toml",
+      "line": 4
+    },
+    {
+      "name": "Python build backend",
+      "value": "setuptools.build_meta",
+      "path": "api/pyproject.toml",
+      "line": 11
+    },
+    {
+      "name": "Rust",
+      "value": "1.80",
+      "path": "native/Cargo.toml",
+      "line": 4
+    },
+    {
+      "name": "Rust edition",
+      "value": "2021",
+      "path": "native/Cargo.toml",
+      "line": 5
+    },
+    {
+      "name": "node",
+      "value": ">=20",
+      "path": "package.json",
+      "line": 4
+    },
+    {
+      "name": "package manager",
+      "value": "pnpm@10.0.0",
+      "path": "package.json",
+      "line": 5
+    }
+  ],
+  "commands": [
+    {
+      "name": "dev",
+      "command": "dev: services",
+      "path": "Makefile",
+      "line": 2,
+      "automatic": false
+    },
+    {
+      "name": "services",
+      "command": "services:",
+      "path": "Makefile",
+      "line": 5,
+      "automatic": false
+    },
+    {
+      "name": "api",
+      "command": "api:",
+      "path": "Makefile",
+      "line": 8,
+      "automatic": false
+    },
+    {
+      "name": "clean",
+      "command": "clean:",
+      "path": "Makefile",
+      "line": 11,
+      "automatic": false
+    },
+    {
+      "name": "atlas-api",
+      "command": "atlas_api.main:serve",
+      "path": "api/pyproject.toml",
+      "line": 7,
+      "automatic": false
+    },
+    {
+      "name": "Cargo build script",
+      "command": "native/build.rs",
+      "path": "native/Cargo.toml",
+      "line": 6,
+      "automatic": true
+    },
+    {
+      "name": "Rust process reference (reachability unknown)",
+      "command": "cc",
+      "path": "native/build.rs",
+      "line": 3,
+      "automatic": false
+    },
+    {
+      "name": "dev",
+      "command": "vite --host 127.0.0.1",
+      "path": "package.json",
+      "line": 7,
+      "automatic": false
+    },
+    {
+      "name": "build",
+      "command": "vite build",
+      "path": "package.json",
+      "line": 8,
+      "automatic": false
+    },
+    {
+      "name": "prepare",
+      "command": "node scripts/generate-client.js",
+      "path": "package.json",
+      "line": 9,
+      "automatic": true
+    }
+  ],
+  "services": [
+    {
+      "name": "database",
+      "value": "postgres:17-alpine",
+      "path": "compose.yaml",
+      "line": 4
+    },
+    {
+      "name": "database · port setting",
+      "value": "- \"127.0.0.1:5432:5432\"",
+      "path": "compose.yaml",
+      "line": 6
+    },
+    {
+      "name": "cache",
+      "value": "redis:7-alpine",
+      "path": "compose.yaml",
+      "line": 10
+    },
+    {
+      "name": "cache · port setting",
+      "value": "- \"127.0.0.1:6379:6379\"",
+      "path": "compose.yaml",
+      "line": 12
+    }
+  ],
+  "environment": [
+    {
+      "name": "DATABASE_URL",
+      "sensitive_name": false,
+      "path": ".env.example",
+      "line": 1
+    },
+    {
+      "name": "REDIS_URL",
+      "sensitive_name": false,
+      "path": ".env.example",
+      "line": 2
+    },
+    {
+      "name": "API_PORT",
+      "sensitive_name": false,
+      "path": ".env.example",
+      "line": 3
+    },
+    {
+      "name": "WEB_PORT",
+      "sensitive_name": false,
+      "path": ".env.example",
+      "line": 4
+    },
+    {
+      "name": "SESSION_SECRET",
+      "sensitive_name": true,
+      "path": ".env.example",
+      "line": 5
+    },
+    {
+      "name": "MAPS_API_KEY",
+      "sensitive_name": true,
+      "path": ".env.example",
+      "line": 6
+    }
+  ],
+  "ecosystems": [
+    "Task recipes",
+    "Python",
+    "Docker",
+    "Rust",
+    "Node.js"
+  ],
+  "notes": [
+    "Compose and workflow inspection is lexical: anchors, merges, interpolation and included files are not resolved.",
+    "Rust build-script inspection only extracts literal Command::new calls; macros, aliases and dynamic arguments are not resolved."
+  ],
+  "summary": {
+    "high": 1,
+    "medium": 4,
+    "info": 2
+  }
+}

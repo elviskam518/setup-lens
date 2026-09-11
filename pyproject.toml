@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "setup-lens"
+version = "0.1.0"
+description = "See a repository's setup footprint before you run it. Offline. No execution. No runtime dependencies."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+keywords = ["developer-tools", "repository", "static-analysis", "docker", "npm", "offline"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.scripts]
+setuplens = "setuplens.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["setuplens*"]
+
+[tool.setuptools.package-data]
+setuplens = ["report.css", "report.js"]

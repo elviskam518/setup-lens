@@ -1,0 +1,14 @@
+# Static fixture, not a runnable application.
+services:
+  database:
+    image: postgres:17-alpine
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - atlas-db:/var/lib/postgresql/data
+  cache:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+volumes:
+  atlas-db:
