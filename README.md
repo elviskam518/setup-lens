@@ -1,5 +1,7 @@
 # SetupLens
 
+[![Tests](https://github.com/elviskam518/setup-lens/actions/workflows/tests.yml/badge.svg)](https://github.com/elviskam518/setup-lens/actions/workflows/tests.yml)
+
 **Understand a repository's setup before you run it.**
 
 SetupLens turns local setup files into an onboarding map: runtime requirements, container services, environment names and command entry points, with source locations. It reads across Node.js, Python, Rust and Docker without running the target project, calling a model or making network requests.
@@ -76,7 +78,7 @@ Useful prior work already exists. [NodeSecure](https://github.com/NodeSecure/sca
 python -m unittest discover -s tests -v
 ```
 
-Tests cover parsing, source locations, non-execution, output escaping, environment handling and CLI behavior. GitHub Actions is configured for Windows, Linux and macOS; a workflow file is not evidence that those remote runs have passed. See [validation notes](docs/validation.md) for the checks actually performed on this release.
+Tests cover parsing, source locations, non-execution, output escaping, environment handling and CLI behavior. The initial release passed all nine GitHub Actions jobs across Windows, Linux and macOS with Python 3.11–3.13. See [validation notes](docs/validation.md) for the recorded run and the badge above for current workflow status.
 
 Small contributions with reproducible examples are welcome. The next useful improvements are better Compose extraction, more precise source mapping, and clearer grouping of monorepo packages. See [CONTRIBUTING.md](CONTRIBUTING.md).
 

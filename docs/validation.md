@@ -16,6 +16,8 @@ Checked locally on Windows with Python 3.12.14 on 2026-09-12.
 | Responsive inspection | Desktop and 390px viewport checked visually; mobile document width did not exceed its viewport |
 | Browser log inspection | No warning/error entries returned during the check |
 
-The GitHub Actions matrix is configured for Windows, Ubuntu and macOS with Python 3.11–3.13. Those remote jobs have not been run as part of this local release. No real-world accuracy benchmark, exhaustive accessibility audit, print/PDF validation or security audit has been performed. The demo is intentionally fictional and is never started or installed.
+The [GitHub Actions matrix passed all nine jobs](https://github.com/elviskam518/setup-lens/actions/runs/34637562699) for commit `236a74f33d66f7b86da2e4dfc1836ba4f9d00a0e`: Windows, Ubuntu and macOS with Python 3.11–3.13. Each job ran the fixture tests, installed the distribution and rendered the demo. The initial run exposed temporary-directory aliases in the test harness; canonicalizing the fixture root fixed the Windows short-name and macOS `/var` alias failures without weakening scanner checks.
+
+No real-world accuracy benchmark, exhaustive accessibility audit, print/PDF validation or security audit has been performed. The demo is intentionally fictional and is never started or installed.
 
 The shipped tests include malformed inputs, dynamic setup declarations, excluded directories, hard-linked output protection, HTML/Markdown injection payloads, source location checks, environment-value omission, deterministic reports and a non-execution fixture.
