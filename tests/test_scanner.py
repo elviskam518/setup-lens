@@ -15,7 +15,9 @@ from setuplens.scanner import MAX_BYTES, redact, scan
 class ScanCase(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
-        self.root = Path(self.temp.name)
+        # Match the scanner's canonical root (Windows short names and macOS
+        # /var aliases otherwise refer to the same directory with different text).
+        self.root = Path(self.temp.name).resolve()
 
     def tearDown(self):
         self.temp.cleanup()
@@ -311,3 +313,4 @@ class ScanCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
